@@ -8,9 +8,9 @@ In terms of sophistication, the focus is made on an ETL pipeline, NLP pipeline a
 
 
 
-![Screenshot 1](1.PNG)
+![Screenshot 1](1.png)
 
-![Screenshot 2](2.PNG)
+![Screenshot 2](2.png)
 
 
 # Installation
