@@ -8,9 +8,9 @@ In terms of sophistication, the focus is made on an ETL pipeline, NLP pipeline a
 
 
 
-![Screenshot 1](1.PNG)
+![Screenshot 1](1.png)
 
-![Screenshot 2](2.PNG)
+![Screenshot 2](2.png)
 
 
 # Installation
@@ -26,9 +26,9 @@ Make sure any Python 3.* is installed alongside the pandas, numpy, matplotlib, s
 
 # Instructions
 Run the following in the project's root directory:
-**python data/process_data.py** ==> to generate the database
-**python models/train_classifier.py** ==> to generate the classifier model that will run the web app. Note: 3 models (model_1, model_2, model_3 are defined and can be used in def main()
-**python run.py** ==> to run web app (make sure classifier model name matches the one in run.py)
+1. **python data/process_data.py** ==> to generate the database
+2. **python models/train_classifier.py** ==> to generate the classifier model that will run the web app. Note: 3 models (model_1, model_2, model_3 are defined and can be used in def main()
+3. **python run.py** ==> to run web app (make sure classifier model name matches the one in run.py)
 
 
 # Licensing, Authors, Acknowledgements
