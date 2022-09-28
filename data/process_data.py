@@ -1,43 +1,25 @@
 import sys
-# import libraries
-import re
-import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
-# import libraries
-import nltk
-nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
-nltk.download('omw-1.4')
-import re
-import numpy as np
-import pandas as pd
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
-from sqlalchemy import create_engine
-from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.preprocessing import MinMaxScaler
-import pickle
-from sklearn.metrics import classification_report
-from sklearn.metrics import precision_recall_fscore_support as score
-from sklearn.multioutput import MultiOutputClassifier
-import matplotlib.pyplot as plt
 
 
-def database_gen():
+
+def database_gen(messages_filepath,categories_filepath):
+    '''
+    - Loads the csv files for the messages and categories and does the necessary cleaning steps required
+    before the NLP processing
+    - Saves the dataframe to an SQLlite Database
+    Args: messages_filepath, categories_filepath
+
+    Returns: Database
+
+    '''
     # load messages dataset
-    messages = pd.read_csv('disaster_messages.csv')
+    messages = pd.read_csv(messages_filepath)
     # messages.head()
     # messages.isna().sum()
     # load categories dataset
-    categories = pd.read_csv('disaster_categories.csv')
+    categories = pd.read_csv(categories_filepath)
     # categories.head()
     # categories.isna().sum()
     # merge datasets
@@ -78,15 +60,19 @@ def database_gen():
     # check number of duplicates
     duplicates_check = df1.duplicated().value_counts()
     # duplicates_check
+    #Convert the related column to binary
+    df1['related'] = df1['related'].astype('str').str.replace('2', '1')
+    df1['related'] = df1['related'].astype('int')
     engine = create_engine('sqlite:///Disaster_Data.db')
     print("---Creating Database---")
     df1.to_sql('Messages-Categories', engine, index=False, if_exists='replace')
     print("---Database created---")
 
 
-def main():
-    database_gen()
-
 
 if __name__ == '__main__':
-    main()
+    try:
+        messages_filepath, categories_filepath = "disaster_messages.csv","disaster_categories.csv"
+        database_gen(messages_filepath, categories_filepath)
+    except FileNotFoundError:
+        print('Review and make sure the datasets filepaths are correctly defined')

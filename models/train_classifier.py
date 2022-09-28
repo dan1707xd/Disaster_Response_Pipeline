@@ -30,9 +30,12 @@ from sklearn.metrics import precision_recall_fscore_support as score
 from sklearn.multioutput import MultiOutputClassifier
 import matplotlib.pyplot as plt
 
-def load_data():
-    '''Loads data from database'''
-    engine = create_engine('sqlite:///../data/Disaster_Data.db')
+def load_data(database_path):
+    '''Loads data from database
+    Args: database_path
+    Returns X and y for split
+    '''
+    engine = create_engine('sqlite:///'+ database_path)
     df = pd.read_sql_table('Messages-Categories',engine)
     X = df.message
     y = df.iloc[:,4:]
@@ -40,7 +43,10 @@ def load_data():
     return X, y
 
 def tokenize(text):
-    '''Simple tokenize function for countvectorizer'''
+    '''Simple tokenize function for countvectorizer
+    Arg: raw text
+    Returns: clean text
+    '''
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
     clean_tokens=list(lemmatizer.lemmatize(tok).lower().strip() for tok in tokens)
@@ -260,8 +266,7 @@ def display_results(cv, y_test, y_pred, name):
 
 
 def main():
-    #database_gen()
-    X, y = load_data()
+    X, y = load_data(database_path)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
     '''3 models have been defined (see above):
         1. model_1:random forest classifier without the additional word2vec transformer and smaller custom transformer
@@ -283,4 +288,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        database_path = '../data/Disaster_Data.db'
+        main()
+    except:
+        print('Check if the database filepath is correct!')
