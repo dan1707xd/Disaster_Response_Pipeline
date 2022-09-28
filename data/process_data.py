@@ -11,7 +11,7 @@ def database_gen(messages_filepath,categories_filepath):
     - Saves the dataframe to an SQLlite Database
     Args: messages_filepath, categories_filepath
 
-    Returns: Database
+    --> Creates Database with 'Messages-Categories' as table name
 
     '''
     # load messages dataset
